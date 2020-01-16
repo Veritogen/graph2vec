@@ -66,10 +66,12 @@ def dataset_reader(path):
 
     if "features" in data.keys():
         features = data["features"]
+        # moved the following line up because it wont work for the features derived by nx.degree()
+        features = {int(k): v for k, v in features.items()}
     else:
         features = nx.degree(graph)
-
-    features = {int(k): v for k, v in features.items()}
+        # added this line features is a list of tuples
+        features = {int(feature[0]): feature[1] for feature in features}
     return graph, features, name
 
 def feature_extractor(path, rounds):
